@@ -1,0 +1,7 @@
+term_id,boundary,meter_id,coefficient,unknown_min,unknown_max
+B1,HP,M1,1,0,15
+B2,HP,M2,-1,0,15
+B3,HP,M3,-1,0,15
+B4,LP,M4,1,0,12
+B5,LP,M5,-1,0,12
+B6,LP,M6,-1,0,12

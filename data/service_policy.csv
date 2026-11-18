@@ -1,0 +1,3 @@
+policy_id,boundary,intensity_limit,service_output,wrong_decision_cost
+P1,HP,1.12,90,12000
+P2,LP,0.95,80,8000

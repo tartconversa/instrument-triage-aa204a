@@ -1,0 +1,3 @@
+result_id,inspection_id,outcome,shift_observed,known_at
+R1,I1,shift,5.8,2025-02-13T08:00:00+08:00
+R2,I3,undone,,2025-02-14T08:00:00+08:00

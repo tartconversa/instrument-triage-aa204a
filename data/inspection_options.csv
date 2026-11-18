@@ -1,0 +1,5 @@
+inspection_id,transmitter,window,cost,slot_usage,precision,status
+I1,T1,W1,1800,1,0.4,planned
+I2,T2,W1,1200,1,0.4,planned
+I3,T3,W2,1600,1,0.5,planned
+I4,T1,W2,1500,1,0.6,planned

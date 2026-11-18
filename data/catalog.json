@@ -1,0 +1,462 @@
+{
+  "title": "共同工况变化下的仪表复核优先级",
+  "encoding": "UTF-8",
+  "delimiter": ",",
+  "missing": "",
+  "synthetic": true,
+  "tables": [
+    {
+      "name": "meters",
+      "description": "共享设备及量程校准契约。",
+      "columns": [
+        {
+          "name": "meter_id",
+          "type": "string",
+          "description": "仪表",
+          "nullable": true
+        },
+        {
+          "name": "transmitter",
+          "type": "string",
+          "description": "共享变送器",
+          "nullable": true
+        },
+        {
+          "name": "boundary",
+          "type": "string",
+          "description": "流量边界",
+          "nullable": true
+        },
+        {
+          "name": "range_max",
+          "type": "number",
+          "description": "量程",
+          "nullable": true
+        },
+        {
+          "name": "calibration_from",
+          "type": "date",
+          "description": "校准开始",
+          "nullable": true
+        },
+        {
+          "name": "calibration_to",
+          "type": "date",
+          "description": "校准结束",
+          "nullable": true
+        },
+        {
+          "name": "error_bound",
+          "type": "number",
+          "description": "允许误差",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "meter_id"
+      ],
+      "references": [],
+      "path": "data/meters.csv",
+      "row_count": 6,
+      "sha256": "7d13273b8f5abaa7004c9e0973a0a8e7421320208cc1c489617fa4ce4fc1f302"
+    },
+    {
+      "name": "flow_boundary",
+      "description": "签名系数相同边界守恒，unknown 为允许未计量净流量区间。",
+      "columns": [
+        {
+          "name": "term_id",
+          "type": "string",
+          "description": "项",
+          "nullable": true
+        },
+        {
+          "name": "boundary",
+          "type": "string",
+          "description": "边界",
+          "nullable": true
+        },
+        {
+          "name": "meter_id",
+          "type": "string",
+          "description": "仪表",
+          "nullable": true
+        },
+        {
+          "name": "coefficient",
+          "type": "number",
+          "description": "系数",
+          "nullable": true
+        },
+        {
+          "name": "unknown_min",
+          "type": "number",
+          "description": "未知流量下界",
+          "nullable": true
+        },
+        {
+          "name": "unknown_max",
+          "type": "number",
+          "description": "未知流量上界",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "term_id"
+      ],
+      "references": [
+        {
+          "column": "meter_id",
+          "target_table": "meters",
+          "target_column": "meter_id"
+        }
+      ],
+      "path": "data/flow_boundary.csv",
+      "row_count": 6,
+      "sha256": "565035ac6945d86eca036d4585b7cfd716fbec76782acc8feb89d8d78d52e442"
+    },
+    {
+      "name": "readings",
+      "description": "工况切换与偏移均未给标签结论。",
+      "columns": [
+        {
+          "name": "reading_id",
+          "type": "string",
+          "description": "观测",
+          "nullable": true
+        },
+        {
+          "name": "meter_id",
+          "type": "string",
+          "description": "表",
+          "nullable": true
+        },
+        {
+          "name": "effective_at",
+          "type": "datetime",
+          "description": "生效",
+          "nullable": true
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "description": "流量",
+          "nullable": true
+        },
+        {
+          "name": "regime",
+          "type": "string",
+          "description": "运行档",
+          "nullable": true
+        },
+        {
+          "name": "known_at",
+          "type": "datetime",
+          "description": "可知",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "reading_id"
+      ],
+      "references": [
+        {
+          "column": "meter_id",
+          "target_table": "meters",
+          "target_column": "meter_id"
+        }
+      ],
+      "path": "data/readings.csv",
+      "row_count": 216,
+      "sha256": "ea59170d071fc06ca39d16d5de5863ff54a6dcc746899a636ec6a8d31e474551"
+    },
+    {
+      "name": "operation_notes",
+      "description": "已确认或延后确认的放空检修。",
+      "columns": [
+        {
+          "name": "note_id",
+          "type": "string",
+          "description": "记录",
+          "nullable": true
+        },
+        {
+          "name": "boundary",
+          "type": "string",
+          "description": "边界",
+          "nullable": true
+        },
+        {
+          "name": "kind",
+          "type": "string",
+          "description": "放空或检修",
+          "nullable": true
+        },
+        {
+          "name": "flow_t",
+          "type": "number",
+          "description": "流量",
+          "nullable": true
+        },
+        {
+          "name": "effective_at",
+          "type": "datetime",
+          "description": "生效",
+          "nullable": true
+        },
+        {
+          "name": "known_at",
+          "type": "datetime",
+          "description": "可知",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "note_id"
+      ],
+      "references": [],
+      "path": "data/operation_notes.csv",
+      "row_count": 2,
+      "sha256": "2c53e36bfc97764281051212135623137c91f5e46b6db33687572c74386bc4c7"
+    },
+    {
+      "name": "service_policy",
+      "description": "能源分析决定的边界，不是故障阈值。",
+      "columns": [
+        {
+          "name": "policy_id",
+          "type": "string",
+          "description": "业务规则",
+          "nullable": true
+        },
+        {
+          "name": "boundary",
+          "type": "string",
+          "description": "边界",
+          "nullable": true
+        },
+        {
+          "name": "intensity_limit",
+          "type": "number",
+          "description": "单耗上限",
+          "nullable": true
+        },
+        {
+          "name": "service_output",
+          "type": "number",
+          "description": "服务产量",
+          "nullable": true
+        },
+        {
+          "name": "wrong_decision_cost",
+          "type": "number",
+          "description": "错误决定代价",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "policy_id"
+      ],
+      "references": [],
+      "path": "data/service_policy.csv",
+      "row_count": 2,
+      "sha256": "48e5712ecb29b457780c5b94dc0b8ee4e7f79a0226be4af454ed715272ea4505"
+    },
+    {
+      "name": "inspection_options",
+      "description": "候选检查及共享窗口占用；同 transmitter 的现场校验可同时提供多个仪表信息。",
+      "columns": [
+        {
+          "name": "inspection_id",
+          "type": "string",
+          "description": "检查",
+          "nullable": true
+        },
+        {
+          "name": "transmitter",
+          "type": "string",
+          "description": "覆盖变送器",
+          "nullable": true
+        },
+        {
+          "name": "window",
+          "type": "string",
+          "description": "窗口",
+          "nullable": true
+        },
+        {
+          "name": "cost",
+          "type": "number",
+          "description": "成本",
+          "nullable": true
+        },
+        {
+          "name": "slot_usage",
+          "type": "integer",
+          "description": "占名额",
+          "nullable": true
+        },
+        {
+          "name": "precision",
+          "type": "number",
+          "description": "校验误差",
+          "nullable": true
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "description": "planned或completed",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "inspection_id"
+      ],
+      "references": [],
+      "path": "data/inspection_options.csv",
+      "row_count": 4,
+      "sha256": "c1293745031f085d9871f92329b58332fcb0acafd546895a0c2a5cb548de4399"
+    },
+    {
+      "name": "windows",
+      "description": "现场窗口共享资源。",
+      "columns": [
+        {
+          "name": "window",
+          "type": "string",
+          "description": "窗口",
+          "nullable": true
+        },
+        {
+          "name": "capacity",
+          "type": "integer",
+          "description": "名额",
+          "nullable": true
+        },
+        {
+          "name": "budget",
+          "type": "number",
+          "description": "预算",
+          "nullable": true
+        },
+        {
+          "name": "at",
+          "type": "datetime",
+          "description": "开始",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "window"
+      ],
+      "references": [],
+      "path": "data/windows.csv",
+      "row_count": 2,
+      "sha256": "3708b7c10af3d23fc44c6b15bbde9d92b080bbbaa2f18f95a200c652891511a0"
+    },
+    {
+      "name": "inspection_results",
+      "description": "按可知时点进入，不是初始诊断标签。偏移为校验测得而非真实生成参数。",
+      "columns": [
+        {
+          "name": "result_id",
+          "type": "string",
+          "description": "结果",
+          "nullable": true
+        },
+        {
+          "name": "inspection_id",
+          "type": "string",
+          "description": "检查",
+          "nullable": true
+        },
+        {
+          "name": "outcome",
+          "type": "string",
+          "description": "passed或shift或undone",
+          "nullable": true
+        },
+        {
+          "name": "shift_observed",
+          "type": "number",
+          "description": "观测偏移",
+          "nullable": true
+        },
+        {
+          "name": "known_at",
+          "type": "datetime",
+          "description": "可知",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "result_id"
+      ],
+      "references": [
+        {
+          "column": "inspection_id",
+          "target_table": "inspection_options",
+          "target_column": "inspection_id"
+        }
+      ],
+      "path": "data/inspection_results.csv",
+      "row_count": 2,
+      "sha256": "4dca8de081f4607776f9e733e77ac12d6ffe3095283a21a9c0134dc3cd6aaae5"
+    },
+    {
+      "name": "check_history",
+      "description": "既往校验的观测关系，用于解释精度和共同设备，非当前故障答案。",
+      "columns": [
+        {
+          "name": "history_id",
+          "type": "string",
+          "description": "校验",
+          "nullable": true
+        },
+        {
+          "name": "transmitter",
+          "type": "string",
+          "description": "变送器",
+          "nullable": true
+        },
+        {
+          "name": "observed_shift",
+          "type": "number",
+          "description": "校验偏移",
+          "nullable": true
+        },
+        {
+          "name": "error_bound",
+          "type": "number",
+          "description": "误差界",
+          "nullable": true
+        },
+        {
+          "name": "outcome",
+          "type": "string",
+          "description": "completed或undone",
+          "nullable": true
+        },
+        {
+          "name": "effective_at",
+          "type": "datetime",
+          "description": "生效",
+          "nullable": true
+        },
+        {
+          "name": "known_at",
+          "type": "datetime",
+          "description": "可知",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "history_id"
+      ],
+      "references": [],
+      "path": "data/check_history.csv",
+      "row_count": 18,
+      "sha256": "de4f3b06c5180931e1ff10ffba23c7f7a55806f23eaa0bbb4445966160892fca"
+    }
+  ]
+}

@@ -167,8 +167,8 @@
         }
       ],
       "path": "data/readings.csv",
-      "row_count": 216,
-      "sha256": "ea59170d071fc06ca39d16d5de5863ff54a6dcc746899a636ec6a8d31e474551"
+      "row_count": 288,
+      "sha256": "0b0dfbb2830cbe8f4845e5a99050fcb1f83fe492cb581df11996e3536be00a5d"
     },
     {
       "name": "operation_notes",
@@ -457,6 +457,61 @@
       "path": "data/check_history.csv",
       "row_count": 18,
       "sha256": "de4f3b06c5180931e1ff10ffba23c7f7a55806f23eaa0bbb4445966160892fca"
+    },
+    {
+      "name": "meter_replacements",
+      "description": "换表后生效的计量契约，原始表号仍用于历史记录。",
+      "columns": [
+        {
+          "name": "replacement_id",
+          "type": "string",
+          "description": "换表",
+          "nullable": true
+        },
+        {
+          "name": "meter_id",
+          "type": "string",
+          "description": "原表号",
+          "nullable": true
+        },
+        {
+          "name": "range_max",
+          "type": "number",
+          "description": "新量程",
+          "nullable": true
+        },
+        {
+          "name": "error_bound",
+          "type": "number",
+          "description": "新误差界",
+          "nullable": true
+        },
+        {
+          "name": "effective_at",
+          "type": "datetime",
+          "description": "生效",
+          "nullable": true
+        },
+        {
+          "name": "known_at",
+          "type": "datetime",
+          "description": "可知",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "replacement_id"
+      ],
+      "references": [
+        {
+          "column": "meter_id",
+          "target_table": "meters",
+          "target_column": "meter_id"
+        }
+      ],
+      "path": "data/meter_replacements.csv",
+      "row_count": 1,
+      "sha256": "2e571fc7d4eb02b4f14806ea15d637bb6f5ecc4d880a5fc6da5cf4410ba360f7"
     }
   ]
 }

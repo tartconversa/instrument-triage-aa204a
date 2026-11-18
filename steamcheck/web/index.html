@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>共同工况下的仪表复核优先级</title>
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<div class="viz-root">
+  <header class="top">
+    <div>
+      <h1>共同工况下的仪表复核优先级</h1>
+      <p class="sub">只给分析复核建议，不控制生产设备。全部为本地合成资料。</p>
+    </div>
+    <div class="timebox" role="group" aria-label="当时可知时点">
+      <label for="as-of">当时可知（known_at）</label>
+      <select id="as-of"></select>
+      <span class="hint" id="as-of-hint"></span>
+    </div>
+  </header>
+
+  <section class="banner" id="banner" aria-live="polite"></section>
+
+  <main class="grid">
+    <section class="card span-2">
+      <div class="card-head">
+        <h2>负荷切换不等于异常</h2>
+        <p class="cap">同一批读数，两种画法。左：每个测点各自的控制线；右：按运行档取中心、再扣共同负荷后的残差。</p>
+      </div>
+      <div class="legend" id="load-legend"></div>
+      <div class="pair">
+        <figure>
+          <figcaption>单测点控制线（不扣负荷）</figcaption>
+          <div id="chart-naive" class="charts" role="img" aria-label="单测点控制线对照图"></div>
+        </figure>
+        <figure>
+          <figcaption>档位 + 共同负荷调整后的残差</figcaption>
+          <div id="chart-adjusted" class="charts" role="img" aria-label="共同负荷调整后残差图"></div>
+        </figure>
+      </div>
+      <div id="load-note" class="note"></div>
+      <details class="table-view"><summary>表格视图（两种画法的逐日数值）</summary><div id="load-table"></div></details>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>能源指标受影响的方式</h2>
+        <p class="cap">实测单耗、修正值，以及"若供汽表偏移成立"的下界。阈值判断与归因分开看。</p>
+      </div>
+      <div id="impacts"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>哪些会改变决定</h2>
+        <p class="cap">区分"数值异常但不改变决定"和"可能改变决定但证据不足"。</p>
+      </div>
+      <div id="clarity"></div>
+    </section>
+
+    <section class="card span-2">
+      <div class="card-head">
+        <h2>从异常到现场结果</h2>
+        <p class="cap">每一段证据保留全部候选解释；现场结果只澄清它覆盖的那部分，其余解释不默认消失。</p>
+      </div>
+      <div id="episodes"></div>
+    </section>
+
+    <section class="card span-2">
+      <div class="card-head">
+        <h2>复核安排：按减少的决策不确定性比较</h2>
+        <p class="cap" id="rank-policy"></p>
+      </div>
+      <div id="candidates"></div>
+      <div id="windows"></div>
+      <div id="coverage" class="note"></div>
+    </section>
+
+    <section class="card span-2">
+      <div class="card-head">
+        <h2>边界守恒与运行记录</h2>
+        <p class="cap">放空/检修只在"当时已知"之后进入解释；此处显示守恒量 S 与允许的未计量净流量区间。</p>
+      </div>
+      <div class="legend" id="balance-legend"></div>
+      <div id="chart-balance" class="chart tall" role="img" aria-label="边界守恒量时间序列"></div>
+      <details class="table-view"><summary>表格视图（逐日守恒量）</summary><div id="balance-table"></div></details>
+    </section>
+
+    <section class="card span-2">
+      <div class="card-head">
+        <h2>当时已知的事实</h2>
+        <p class="cap">按 known_at 进入时间线。切换上方时点，可看到"当时能看到什么"；生效早于可知的记录不得用于评价更早的告警。</p>
+      </div>
+      <div id="events" class="events"></div>
+    </section>
+
+    <section class="card span-2">
+      <h2>仍不能安全形成的结论</h2>
+      <ul id="caveats"></ul>
+    </section>
+  </main>
+</div>
+<script src="/app.js"></script>
+<script src="/render.js"></script>
+</body>
+</html>

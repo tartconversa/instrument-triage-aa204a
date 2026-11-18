@@ -6,6 +6,19 @@ import hashlib
 import json
 import math
 
+
+def digest(path):
+    """资料摘要：先统一换行符，再按资料目录登记的规范形式计算。
+
+    资料目录里的摘要按 CRLF 规范形式登记；工作区检出的 CSV 可能是 LF。
+    只统一换行、不改动任何其他字节，避免"仅换行不同"被误判为内容损坏。
+    """
+    raw = Path(path).read_bytes()
+    text = raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    canonical = text.replace(b"\n", b"\r\n")
+    return hashlib.sha256(canonical).hexdigest()
+
+
 def read_table(path, table):
     """读取一张资料表并验证字段、基本类型和记录键。"""
     with Path(path).open(encoding="utf-8", newline="") as stream:
@@ -46,6 +59,7 @@ def read_table(path, table):
             seen.add(key)
     return result
 
+
 def inspect(root):
     """核对资料摘要及声明的引用关系。"""
     root = Path(root).resolve()
@@ -55,14 +69,13 @@ def inspect(root):
         path = (root / table["path"]).resolve()
         if not path.is_relative_to(root) or not path.is_file():
             raise ValueError("文件路径无效")
-        digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        if digest != table["sha256"]:
+        if digest(path) != table["sha256"]:
             raise ValueError("资料摘要不一致：" + table["name"])
         data = read_table(path, table)
         if len(data) != table["row_count"]:
             raise ValueError("记录数不一致：" + table["name"])
         records[table["name"]] = data
-        report.append({"name": table["name"], "rows": len(data), "sha256": digest})
+        report.append({"name": table["name"], "rows": len(data), "sha256": digest(path)})
     for table in catalog["tables"]:
         for reference in table.get("references", []):
             allowed = {r[reference["target_column"]] for r in records[reference["target_table"]]}
